@@ -15,8 +15,7 @@
  * =====================================================================================
  */
 
-#include <log/log.h>
-#include <iostream>
+#include "../../inc/log/log.h"
 
 int main(int argc, char* argv[]) {
     Logger::set_fp_stream(Logger::debug, "./debug.log");
