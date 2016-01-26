@@ -9,7 +9,9 @@
 #
 #          Author:  Zheng Yuhong , 371582812@qq.com
 #        HOMEPAGE:  zhengyh.com
-cd ..
+cd $(dirname $0)/../..
+ROOt_DIR=$(pwd)
+cd ${ROOt_DIR}/src
 sh build.sh
-cd -
+cd ${ROOt_DIR}/src/test
 make clean && make

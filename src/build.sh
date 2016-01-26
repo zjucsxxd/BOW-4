@@ -9,4 +9,7 @@
 #
 #          Author:  Zheng Yuhong , 371582812@qq.com
 #        HOMEPAGE:  zhengyh.com
+cd $(dirname $0)/..
+ROOT_DIR=$(pwd)
+cd ${ROOT_DIR}/src
 make ar
