@@ -13,7 +13,7 @@ cd $(dirname $0)/..
 
 #dep update command
 #git fetch log master
-#git subtree pull --prefix=dep/log log master
+#git subtree pull --prefix=dep/log log master –no-squash
 
 ROOT_DIR=$(pwd)
 
