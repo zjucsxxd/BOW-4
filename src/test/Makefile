@@ -1,5 +1,5 @@
 STD = -std=c++11
-INCLUDE = -I.
+INCLUDE = -I../../inc
 CXXFLAGS = $(STD) -g -O2 -Wall $(INCLUDE)
 #CXXFLAGS = $(STD) -g -O2 -DDEBUG -Wall $(INCLUDE)
 LD = $(CXX)

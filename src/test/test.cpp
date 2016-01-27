@@ -18,8 +18,7 @@
 #include <iostream>
 #include <thread>
 
-
-#include "../../inc/filestream/filestream.h"
+#include <filestream/filestream.h>
 
 int foo(FileStream* fsp) {
     FileStream& fs = *fsp;
