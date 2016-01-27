@@ -10,8 +10,11 @@
 #          Author:  Zheng Yuhong , 371582812@qq.com
 #        HOMEPAGE:  zhengyh.com
 cd $(dirname $0)/..
-git fetch log master
-git subtree pull --prefix=dep/log log master --squash
+
+#dep update command
+#git fetch log master
+#git subtree pull --prefix=dep/log log master --squash
+
 ROOT_DIR=$(pwd)
 
 mkdir -p ${ROOT_DIR}/inc
