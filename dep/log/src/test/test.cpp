@@ -5,7 +5,7 @@
  *
  *        Version:  1.0
  *        Created:  2015-01-26
- *       Modified:  2016-01-26
+ *       Modified:  2016-01-27
  *       Revision:  none
  *       Compiler:  g++
  *
@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
     WARNING_LOG("warning log message");
     NOTICE_LOG("notice log message");
     STDERR_LOG("stderr log message");
+    STDOUT_LOG("stdout log message");
     return 0;
 }
 

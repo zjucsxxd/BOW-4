@@ -5,7 +5,7 @@
  *
  *        Version:  1.0
  *        Created:  2015-01-26
- *       Modified:  2016-01-26
+ *       Modified:  2016-01-27
  *       Revision:  none
  *       Compiler:  g++
  *
@@ -103,14 +103,22 @@ public:
         fprintf(Logger::get_fp_stream(Logger::notice), "%c", '\n');\
     }
 
-#define STDERR_LOG(fmt, args...) \
-    if (Logger::get_fp_stream(Logger::other)) {\
+#define STDERR_LOG(fmt, args...) {\
         std::unique_lock<std::mutex> lck(Logger::get_fp_mutex());\
         time_t timer = time(NULL);\
         struct tm* t = localtime(&timer);\
-        fprintf(Logger::get_fp_stream(Logger::other), "[%d-%d-%d %d:%d:%d %s:%d]", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, __FILE__, __LINE__);\
-        fprintf(Logger::get_fp_stream(Logger::other), fmt, ##args);\
-        fprintf(Logger::get_fp_stream(Logger::other), "%c", '\n');\
+        fprintf(stderr, "[%d-%d-%d %d:%d:%d %s:%d]", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, __FILE__, __LINE__);\
+        fprintf(stderr, fmt, ##args);\
+        fprintf(stderr, "%c", '\n');\
+    }
+
+#define STDOUT_LOG(fmt, args...) {\
+        std::unique_lock<std::mutex> lck(Logger::get_fp_mutex());\
+        time_t timer = time(NULL);\
+        struct tm* t = localtime(&timer);\
+        fprintf(stdout, "[%d-%d-%d %d:%d:%d %s:%d]", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, __FILE__, __LINE__);\
+        fprintf(stdout, fmt, ##args);\
+        fprintf(stdout, "%c", '\n');\
     }
 
 #endif//LOG_H
