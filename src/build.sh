@@ -11,7 +11,7 @@
 #        HOMEPAGE:  zhengyh.com
 cd $(dirname $0)/..
 git fetch log master
-git subtree pull --prefix=dep/log log master
+git subtree pull --prefix=dep/log log master --squash
 ROOT_DIR=$(pwd)
 
 mkdir -p ${ROOT_DIR}/inc
