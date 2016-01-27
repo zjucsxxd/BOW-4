@@ -10,16 +10,17 @@
 #          Author:  Zheng Yuhong , 371582812@qq.com
 #        HOMEPAGE:  zhengyh.com
 cd $(dirname $0)/..
-git submodule update --init --recursive
+git fetch log master
+git subtree pull --prefix=dep/log log --squash
 ROOT_DIR=$(pwd)
 
 mkdir -p ${ROOT_DIR}/inc
 mkdir -p ${ROOT_DIR}/lib
 
-cd ${ROOT_DIR}/3rd/log/src/
+cd ${ROOT_DIR}/dep/log/src/
 sh build.sh
-cp -r ${ROOT_DIR}/3rd/log/inc/* ${ROOT_DIR}/inc
-cp -r ${ROOT_DIR}/3rd/log/lib/* ${ROOT_DIR}/lib
+cp -r ${ROOT_DIR}/dep/log/inc/* ${ROOT_DIR}/inc
+cp -r ${ROOT_DIR}/dep/log/lib/* ${ROOT_DIR}/lib
 
 cd ${ROOT_DIR}/src
 make ar
