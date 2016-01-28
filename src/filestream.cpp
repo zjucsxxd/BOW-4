@@ -5,7 +5,7 @@
  *
  *        Version:  1.0
  *        Created:  2016-01-26
- *       Modified:  2016-01-27
+ *       Modified:  2016-01-28
  *       Revision:  none
  *       Compiler:  g++
  *
@@ -19,7 +19,6 @@
 #include <log/log.h>
 
 int FileStream::stream2memory() {
-    DEBUG_LOG("FileStream::stream2memory");
     std::unique_lock<std::mutex> lck(m_mtx);
     Document& document = m_document;
     document.clear();
