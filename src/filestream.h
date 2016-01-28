@@ -5,7 +5,7 @@
  *
  *        Version:  1.0
  *        Created:  2016-01-26
- *       Modified:  2016-01-27
+ *       Modified:  2016-01-28
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -35,8 +35,10 @@ private:
     typedef struct Parameter {
     public:
         Document* document;
+        std::string* document_id;
         Parameter() {
             document = nullptr;
+            document_id = nullptr;
         }
     } Parameter;
 
@@ -49,7 +51,7 @@ private:
 
 private:
     // private member function
-    int stream2memory();
+    int stream2memory(Parameter& parameter);
 
 public:
     FileStream(const std::string& path);
@@ -59,6 +61,7 @@ public:
     int reset(const std::string& path);
 
     int get_document(std::vector<std::string>& document);
+    int get_document(std::vector<std::string>& document, std::string& document_id);
 
 
 };//class FileStram

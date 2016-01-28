@@ -18,7 +18,7 @@
 #include "filestream.h"
 #include <log/log.h>
 
-int FileStream::stream2memory() {
+int FileStream::stream2memory(Parameter& parameter) {
     auto& mtx = m_mtx;
     Document& document = m_document;
     std::ifstream& fin = m_fin;
@@ -42,6 +42,12 @@ int FileStream::stream2memory() {
             if (!(ss >> n)) {
                 STDERR_LOG("std::stringstream >> failed");
                 return -1;
+            }
+            if (parameter.document_id) {
+                if (!(ss >> *parameter.document_id)) {
+                    STDERR_LOG("std::stringstream >> failed");
+                    return -1;
+                }
             }
         } else {
             STDERR_LOG("getline failed");
@@ -96,7 +102,7 @@ int FileStream::get_document(std::vector<std::string>& doc) {
     doc.clear();
     parameter.document = &doc;
     if (!document.size()) {
-        if (stream2memory()) {
+        if (stream2memory(parameter)) {
             STDERR_LOG("stream2memory failed");
             return -1;
         }
@@ -107,8 +113,34 @@ int FileStream::get_document(std::vector<std::string>& doc) {
         }
     }
     parameter.document->swap(document);
-    fut = std::async([this]() {
-        return stream2memory();
+    fut = std::async([this, &parameter]() {
+        return stream2memory(parameter);
+    });
+    return 0;
+}
+
+int FileStream::get_document(std::vector<std::string>& doc, std::string& document_id) {
+    auto& fut = m_fut;
+    auto& document = m_document;
+
+    Parameter parameter;
+    doc.clear();
+    parameter.document = &doc;
+    parameter.document_id = &document_id;
+    if (!document.size()) {
+        if (stream2memory(parameter)) {
+            STDERR_LOG("stream2memory failed");
+            return -1;
+        }
+    } else {
+        if (fut.get()) {
+            STDERR_LOG("stream2memory failed");
+            return -1;
+        }
+    }
+    parameter.document->swap(document);
+    fut = std::async([this, &parameter]() {
+        return stream2memory(parameter);
     });
     return 0;
 }
