@@ -48,6 +48,7 @@ private:
     std::mutex m_mtx;
     std::future<int> m_fut;
     Document m_document;
+    std::string m_document_id;
 
 private:
     // private member function

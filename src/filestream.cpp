@@ -21,6 +21,7 @@
 int FileStream::stream2memory(Parameter& parameter) {
     auto& mtx = m_mtx;
     Document& document = m_document;
+    auto& document_id = m_document_id;
     std::ifstream& fin = m_fin;
 
     std::unique_lock<std::mutex> lck(mtx);
@@ -44,7 +45,7 @@ int FileStream::stream2memory(Parameter& parameter) {
                 return -1;
             }
             if (parameter.document_id) {
-                if (!(ss >> *parameter.document_id)) {
+                if (!(ss >> document_id)) {
                     STDERR_LOG("std::stringstream >> failed");
                     return -1;
                 }
@@ -119,14 +120,15 @@ int FileStream::get_document(std::vector<std::string>& doc) {
     return 0;
 }
 
-int FileStream::get_document(std::vector<std::string>& doc, std::string& document_id) {
+int FileStream::get_document(std::vector<std::string>& doc, std::string& doc_id) {
     auto& fut = m_fut;
     auto& document = m_document;
+    auto& document_id = m_document_id;
 
-    Parameter parameter;
     doc.clear();
-    parameter.document = &doc;
-    parameter.document_id = &document_id;
+    doc_id.clear();
+    Parameter parameter;
+    parameter.document_id = &doc_id;
     if (!document.size()) {
         if (stream2memory(parameter)) {
             STDERR_LOG("stream2memory failed");
@@ -138,7 +140,9 @@ int FileStream::get_document(std::vector<std::string>& doc, std::string& documen
             return -1;
         }
     }
-    parameter.document->swap(document);
+
+    doc.swap(document);
+    doc_id.swap(document_id);
     fut = std::async([this, &parameter]() {
         return stream2memory(parameter);
     });
