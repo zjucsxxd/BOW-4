@@ -19,10 +19,12 @@
 #include <log/log.h>
 
 int FileStream::stream2memory() {
-    std::unique_lock<std::mutex> lck(m_mtx);
+    auto& mtx = m_mtx;
     Document& document = m_document;
-    document.clear();
     std::ifstream& fin = m_fin;
+
+    std::unique_lock<std::mutex> lck(mtx);
+    document.clear();
 
     if (fin.eof()) {
         return 0;
@@ -86,23 +88,26 @@ int FileStream::reset(const std::string& path) {
     return 0;
 }
 
-int FileStream::get_document(std::vector<std::string>& document) {
-    document.clear();
+int FileStream::get_document(std::vector<std::string>& doc) {
+    auto& fut = m_fut;
+    auto& document = m_document;
+
     Parameter parameter;
-    parameter.document = &document;
-    if (!m_document.size()) {
+    doc.clear();
+    parameter.document = &doc;
+    if (!document.size()) {
         if (stream2memory()) {
             STDERR_LOG("stream2memory failed");
             return -1;
         }
     } else {
-        if (m_fut.get()) {
+        if (fut.get()) {
             STDERR_LOG("stream2memory failed");
             return -1;
         }
     }
-    parameter.document->swap(m_document);
-    m_fut = std::async([this]() {
+    parameter.document->swap(document);
+    fut = std::async([this]() {
         return stream2memory();
     });
     return 0;
