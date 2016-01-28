@@ -1,5 +1,5 @@
 STD = -std=c++11
-INCLUDE = -I../../include
+INCLUDE = -I../../inc
 #CXXFLAGS = $(STD) -g -O2 -Wall $(INCLUDE) -DRELEASE #在发布版本状态下，不输出DEBUG日志消息
 CXXFLAGS = $(STD) -g -O2 -Wall $(INCLUDE)
 LD = $(CXX)
