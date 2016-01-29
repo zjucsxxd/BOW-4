@@ -5,7 +5,7 @@
  *
  *        Version:  1.0
  *        Created:  2016-01-26
- *       Modified:  2016-01-28
+ *       Modified:  2016-01-29
  *       Revision:  none
  *       Compiler:  g++
  *
@@ -52,8 +52,8 @@ int FileStream::stream2memory(Parameter& parameter) {
             }
         } else {
             STDERR_LOG("getline failed");
-            STDERR_LOG("eof%d", fin.eof());
-            STDERR_LOG("fail%d", fin.fail());
+            STDERR_LOG("eof[%d]", fin.eof());
+            STDERR_LOG("fail[%d]", fin.fail());
             return -1;
         }
     } else {
