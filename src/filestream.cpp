@@ -42,22 +42,36 @@ int FileStream::stream2memory(Parameter& parameter) {
             ss.str(line);
             if (!(ss >> n)) {
                 STDERR_LOG("std::stringstream >> failed");
+                STDERR_LOG("good[%d]", fin.good());
+                STDERR_LOG("eof[%d]", fin.eof());
+                STDERR_LOG("fail[%d]", fin.fail());
+                STDERR_LOG("bad[%d]", fin.bad());
                 return -1;
             }
             if (parameter.document_id) {
                 if (!(ss >> document_id)) {
                     STDERR_LOG("std::stringstream >> failed");
+                    STDERR_LOG("good[%d]", fin.good());
+                    STDERR_LOG("eof[%d]", fin.eof());
+                    STDERR_LOG("fail[%d]", fin.fail());
+                    STDERR_LOG("bad[%d]", fin.bad());
                     return -1;
                 }
             }
         } else {
             STDERR_LOG("getline failed");
+            STDERR_LOG("good[%d]", fin.good());
             STDERR_LOG("eof[%d]", fin.eof());
             STDERR_LOG("fail[%d]", fin.fail());
+            STDERR_LOG("bad[%d]", fin.bad());
             return -1;
         }
     } else {
         STDERR_LOG("std::ifstream state fail");
+        STDERR_LOG("good[%d]", fin.good());
+        STDERR_LOG("eof[%d]", fin.eof());
+        STDERR_LOG("fail[%d]", fin.fail());
+        STDERR_LOG("bad[%d]", fin.bad());
         return -1;
     }
     // =====================================================================================>
