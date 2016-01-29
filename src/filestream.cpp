@@ -27,20 +27,24 @@ int FileStream::stream2memory(Parameter& parameter) {
     std::unique_lock<std::mutex> lck(mtx);
     document.clear();
 
-    if (fin.eof()) {
-        return 0;
-    }
-
     std::string line;
     std::stringstream ss;;
 
     // <=====================================================================================
     // read line number
     uint32_t n;
-    if (fin.good()) {
-        if (getline(fin, line)) {
-            ss.str(line);
-            if (!(ss >> n)) {
+    if (getline(fin, line)) {
+        ss.str(line);
+        if (!(ss >> n)) {
+            STDERR_LOG("std::stringstream >> failed");
+            STDERR_LOG("good[%d]", fin.good());
+            STDERR_LOG("eof[%d]", fin.eof());
+            STDERR_LOG("fail[%d]", fin.fail());
+            STDERR_LOG("bad[%d]", fin.bad());
+            return -1;
+        }
+        if (parameter.document_id) {
+            if (!(ss >> document_id)) {
                 STDERR_LOG("std::stringstream >> failed");
                 STDERR_LOG("good[%d]", fin.good());
                 STDERR_LOG("eof[%d]", fin.eof());
@@ -48,26 +52,12 @@ int FileStream::stream2memory(Parameter& parameter) {
                 STDERR_LOG("bad[%d]", fin.bad());
                 return -1;
             }
-            if (parameter.document_id) {
-                if (!(ss >> document_id)) {
-                    STDERR_LOG("std::stringstream >> failed");
-                    STDERR_LOG("good[%d]", fin.good());
-                    STDERR_LOG("eof[%d]", fin.eof());
-                    STDERR_LOG("fail[%d]", fin.fail());
-                    STDERR_LOG("bad[%d]", fin.bad());
-                    return -1;
-                }
-            }
-        } else {
-            STDERR_LOG("getline failed");
-            STDERR_LOG("good[%d]", fin.good());
-            STDERR_LOG("eof[%d]", fin.eof());
-            STDERR_LOG("fail[%d]", fin.fail());
-            STDERR_LOG("bad[%d]", fin.bad());
-            return -1;
         }
     } else {
-        STDERR_LOG("std::ifstream state fail");
+        if (fin.eof()) {
+            return 0;
+        }
+        STDERR_LOG("getline failed");
         STDERR_LOG("good[%d]", fin.good());
         STDERR_LOG("eof[%d]", fin.eof());
         STDERR_LOG("fail[%d]", fin.fail());
