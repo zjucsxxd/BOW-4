@@ -1,0 +1,6 @@
+lib
+inc
+object
+.*
+core
+test$
